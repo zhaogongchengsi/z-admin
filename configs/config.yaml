@@ -1,0 +1,9 @@
+Service:
+  Port: 9090
+  Mode: debug
+DateBase:
+  DbName: z_admin
+  UserName: admin
+  PassWord: 12345
+  Url: 127.0.0.1
+  Port: 3306
