@@ -9,5 +9,5 @@ import (
 func CreateRoute(c *gin.Engine) {
 	// User Router Group (api/user)
 	api.UserRouter(c)
-
+	api.OtherRouter(c)
 }

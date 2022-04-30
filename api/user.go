@@ -17,11 +17,17 @@ func UserRouter(c *gin.Engine) {
 
 func CreateUser(c *gin.Context) {
 	var user controller.User
-	c.ShouldBindJSON(&user)
-	u, err := user.Register()
+	err := c.ShouldBindJSON(&user)
 
 	if err != nil {
 		response.ErrorResponse(err).Send(c)
+		return
+	}
+
+	u, err := user.Register()
+
+	if err != nil {
+		response.FailureResponse(err.Error()).Send(c)
 		return
 	}
 
