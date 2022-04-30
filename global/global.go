@@ -9,18 +9,18 @@ import (
 )
 
 const (
-	ConfigName string = "config" // 配置文件名字
-	ConfigType string = "yaml" // 配置文件类型
+	ConfigName string = "config"    // 配置文件名字
+	ConfigType string = "yaml"      // 配置文件类型
 	ConfigPath string = "./configs" // 配置文件路径
 )
 
 var (
-	Server *Service
-	Db *DataBase
+	Server   *Service
+	Db       *DataBase
 	DBEngine *gorm.DB
 )
 
-func InitGlobal ()  error {
+func InitGlobal() error {
 	s, err := NewSetting(ConfigName, ConfigPath, ConfigType)
 	if err != nil {
 		return err
@@ -29,7 +29,7 @@ func InitGlobal ()  error {
 	err = s.ReadSetting("Service", &Server)
 	err = s.ReadSetting("DateBase", &Db)
 
- 	err = ConnectDb()
+	err = ConnectDb()
 
 	if err != nil {
 		return err
@@ -38,31 +38,34 @@ func InitGlobal ()  error {
 	return nil
 }
 
-func ConnectDb () error {
+func ConnectDb() error {
 
-	dns := fmt.Sprintf(`
-				%s:%s@tcp(%s:%v)/%s?charset=utf8&parseTime=True&loc=Local`,
-				Db.UserName,
-				Db.PassWord,
-				Db.Url,
-				Db.Port,
-				Db.DbName,
+	dns := fmt.Sprintf(`%s:%s@tcp(%s:%v)/%s?charset=utf8&parseTime=True&loc=Local`,
+		Db.UserName,
+		Db.PassWord,
+		Db.Url,
+		Db.Port,
+		Db.DbName,
 	)
 
 	DB, err := gorm.Open(mysql.New(mysql.Config{
-		DSN: dns,
-		DefaultStringSize: 256, // string 类型字段的默认长度
-		DisableDatetimePrecision: true, // 禁用 datetime 精度，MySQL 5.6 之前的数据库不支持
-		DontSupportRenameIndex: true, // 重命名索引时采用删除并新建的方式，MySQL 5.7 之前的数据库和 MariaDB 不支持重命名索引
-		DontSupportRenameColumn: true, // 用 `change` 重命名列，MySQL 8 之前的数据库和 MariaDB 不支持重命名列
+		DSN:                       dns,
+		DefaultStringSize:         256,   // string 类型字段的默认长度
+		DisableDatetimePrecision:  true,  // 禁用 datetime 精度，MySQL 5.6 之前的数据库不支持
+		DontSupportRenameIndex:    true,  // 重命名索引时采用删除并新建的方式，MySQL 5.7 之前的数据库和 MariaDB 不支持重命名索引
+		DontSupportRenameColumn:   true,  // 用 `change` 重命名列，MySQL 8 之前的数据库和 MariaDB 不支持重命名列
 		SkipInitializeWithVersion: false, // 根据当前 MySQL 版本自动配置
 	}), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
-			TablePrefix:   "z_", // 表名前缀，`User`表为`t_users`
-			SingularTable: true,                        // 使用单数表名，启用该选项后，`User` 表将是`user
+			TablePrefix:   "z_", // 表名前缀，
+			SingularTable: true, // 使用单数表名，启用该选项后，`User` 表将是`user
 		},
 		DisableForeignKeyConstraintWhenMigrating: true, // 不使用物理外键
 	})
+
+	if err != nil {
+		return err
+	}
 
 	sqlDB, err := DB.DB()
 

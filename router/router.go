@@ -1,16 +1,13 @@
 package router
 
 import (
+	"z-admin/api"
+
 	"github.com/gin-gonic/gin"
-	"z-admin/controller"
 )
 
 func CreateRoute(c *gin.Engine) {
+	// User Router Group (api/user)
+	api.UserRouter(c)
 
-	user := new(controller.User)
-
-	routerGroup := c.Group("/home")
-	{
-		routerGroup.GET("/", user.Home)
-	}
 }
