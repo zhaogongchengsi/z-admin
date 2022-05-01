@@ -70,7 +70,7 @@ func (u *User) ChangePass(newpassword string) error {
 		return errors.New("用户不存在或者密码错误(请检查用户名和密码)")
 	}
 
-	newUser, err := model.CreateUserModel(u.UserName, newpassword, oldUser.NickName, oldUser.AvatarUrl)
+	newUser, err := model.CreateUserModel(oldUser.UserName, newpassword, oldUser.NickName, oldUser.AvatarUrl)
 
 	if err != nil {
 		return err
