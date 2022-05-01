@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"z-admin/global"
 	"z-admin/router"
+
+	"github.com/gin-gonic/gin"
 )
 
-
-func init () {
+func init() {
 	// 初始化全局配置
 	err := global.InitGlobal()
 
@@ -17,7 +17,6 @@ func init () {
 	}
 
 }
-
 
 func main() {
 	gin.SetMode(global.Server.Mode)

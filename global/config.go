@@ -1,16 +1,19 @@
 package global
 
-
-
 type Service struct {
 	Port int
 	Mode string
 }
 
 type DataBase struct {
-	DbName string
-	UserName string
-	PassWord string
-	Url string
-	Port string
+	DbName        string
+	UserName      string
+	PassWord      string
+	Url           string
+	Port          string
+	MaxIdleConns  int
+	MaxOpenConns  int
+	TablePrefix   string
+	SingularTable bool
+	Charset       string
 }

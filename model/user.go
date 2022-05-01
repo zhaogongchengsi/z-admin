@@ -22,16 +22,18 @@ func CreateUserTable() error {
 	return global.DBEngine.AutoMigrate(&UserModel{})
 }
 
+// 创建用户： 账号 密码 昵称 头像
 func NewUserModel(u, p, n, a string) (*UserModel, error) {
 	id := uuid.NewV4()        // 用户唯一标识
 	newp, err := utils.Md5(p) // 加密密码 不可逆
 	if err != nil {
 		return nil, err
 	}
+
 	return &UserModel{
 		UId:       id,
 		UserName:  u,
-		PassWord:  string(newp),
+		PassWord:  newp,
 		NickName:  n,
 		AvatarUrl: a,
 	}, nil
@@ -49,7 +51,7 @@ func (m *UserModel) CreateUser() (*UserModel, error) {
 // 根据用户账号查找用户
 func FindUserByName(name string) (*UserModel, error) {
 	var user UserModel
-	err := global.DBEngine.Where("username = ?", name).First(&user).Error
+	err := global.DBEngine.Where("user_name = ?", name).First(&user).Error
 	return &user, err
 }
 

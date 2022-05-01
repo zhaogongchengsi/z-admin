@@ -2,8 +2,20 @@ Service:
   Port: 9090
   Mode: debug
 DateBase:
+  # 数据库的名字
   DbName: z-admin
   UserName: root
   PassWord: Zzh3132..
+  # 数据库的连接路径
   Url: gz-cynosdbmysql-grp-lhkcx3ln.sql.tencentcdb.com
+  # 数据库连接的端口
   Port: 26832
+  # 用于设置连接池中空闲连接的最大数量。
+  MaxIdleConns: 5
+  # 设置打开数据库连接的最大数量。
+  MaxOpenConns: 10
+  # 表名前缀
+  TablePrefix: z_
+  # 是否开启复数表名
+  SingularTable: true
+  Charset: utf8mb4

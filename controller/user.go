@@ -3,6 +3,8 @@ package controller
 import (
 	"errors"
 	"z-admin/model"
+
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -16,12 +18,8 @@ type User struct {
 func (u *User) Register() (user *model.UserModel, err error) {
 
 	oldUser, err := model.FindUserByName(u.UserName)
-	if err != nil {
-		return nil, err
-	}
-
-	if oldUser != nil {
-		return nil, errors.New("用户已存在")
+	if err != gorm.ErrRecordNotFound {
+		return oldUser, errors.New("用户已存在")
 	}
 
 	newUser, err := model.NewUserModel(u.UserName, u.Password, u.NickName, u.AvatarUrl)

@@ -2,10 +2,11 @@ package global
 
 import (
 	"fmt"
+	"time"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"time"
 )
 
 const (
@@ -20,6 +21,20 @@ var (
 	DBEngine *gorm.DB
 )
 
+// 感觉这种写法不是很好
+// var configs = map[string]interface{}{
+// 	"Service":  &Service{},
+// 	"DateBase": &DataBase{},
+// }
+
+// func GetConfig(ConfigName string) (interface{}, error) {
+// 	value, ok := configs[ConfigName]
+// 	if !ok {
+// 		return nil, errors.New("config not found")
+// 	}
+// 	return value, nil
+// }
+
 func InitGlobal() error {
 	s, err := NewSetting(ConfigName, ConfigPath, ConfigType)
 	if err != nil {
@@ -27,7 +42,16 @@ func InitGlobal() error {
 	}
 
 	err = s.ReadSetting("Service", &Server)
+
+	if err != nil {
+		return err
+	}
+
 	err = s.ReadSetting("DateBase", &Db)
+
+	if err != nil {
+		return err
+	}
 
 	err = ConnectDb()
 
@@ -40,12 +64,13 @@ func InitGlobal() error {
 
 func ConnectDb() error {
 
-	dns := fmt.Sprintf(`%s:%s@tcp(%s:%v)/%s?charset=utf8&parseTime=True&loc=Local`,
+	dns := fmt.Sprintf(`%s:%s@tcp(%s:%v)/%s?charset=%s&parseTime=True&loc=Local`,
 		Db.UserName,
 		Db.PassWord,
 		Db.Url,
 		Db.Port,
 		Db.DbName,
+		Db.Charset,
 	)
 
 	DB, err := gorm.Open(mysql.New(mysql.Config{
@@ -57,8 +82,8 @@ func ConnectDb() error {
 		SkipInitializeWithVersion: false, // 根据当前 MySQL 版本自动配置
 	}), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
-			TablePrefix:   "z_", // 表名前缀，
-			SingularTable: true, // 使用单数表名，启用该选项后，`User` 表将是`user
+			TablePrefix:   Db.TablePrefix,   // 表名前缀，
+			SingularTable: Db.SingularTable, // 使用单数表名，启用该选项后，`User` 表将是`user
 		},
 		DisableForeignKeyConstraintWhenMigrating: true, // 不使用物理外键
 	})
@@ -76,10 +101,10 @@ func ConnectDb() error {
 	DBEngine = DB
 
 	// SetMaxIdleConns 用于设置连接池中空闲连接的最大数量。
-	sqlDB.SetMaxIdleConns(3)
+	sqlDB.SetMaxIdleConns(Db.MaxIdleConns)
 
 	//// SetMaxOpenConns 设置打开数据库连接的最大数量。
-	sqlDB.SetMaxOpenConns(3)
+	sqlDB.SetMaxOpenConns(Db.MaxOpenConns)
 
 	// SetConnMaxLifetime 设置了连接可复用的最大时间。
 	sqlDB.SetConnMaxLifetime(time.Hour)
