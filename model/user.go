@@ -69,3 +69,9 @@ func (m *UserModel) GetUserList() ([]UserModel, error) {
 func (m *UserModel) DeletelUser() error {
 	return global.DBEngine.Delete(m).Error
 }
+
+func (m *UserModel) FindUserByPasswordAndUsername() (*UserModel, error) {
+	var user UserModel
+	err := global.DBEngine.Where("pass_word = ? AND user_name = ?", m.PassWord, m.UserName).First(&user).Error
+	return &user, err
+}

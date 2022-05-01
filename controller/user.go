@@ -35,3 +35,22 @@ func (u *User) Register() (user *model.UserModel, err error) {
 
 	return newUser, nil
 }
+
+func (u *User) Login() (*model.UserModel, error) {
+
+	user, err := model.NewUserModel(u.UserName, u.Password, "", "")
+
+	if err != nil {
+		return nil, err
+	}
+
+	userp, err := user.FindUserByPasswordAndUsername()
+
+	if err != nil {
+		return nil, errors.New("密码错误或用户不存在")
+	}
+	userp.PassWord = ""
+
+	return userp, nil
+
+}

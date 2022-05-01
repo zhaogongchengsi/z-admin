@@ -22,7 +22,7 @@ func SuccessResponse(data any) *Response {
 // 创建失败的响应
 func FailureResponse(msg string) *Response {
 	return &Response{
-		Code: 500,
+		Code: 400,
 		Msg:  msg,
 	}
 }
