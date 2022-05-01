@@ -38,7 +38,7 @@ func (u *User) Register() (user *model.UserModel, err error) {
 
 func (u *User) Login() (*model.UserModel, error) {
 
-	user, err := model.CreateUserModel(u.UserName, u.Password)
+	user, err := model.CreateUserModel(u.UserName, u.Password, "", "")
 
 	if err != nil {
 		return nil, err
@@ -49,8 +49,38 @@ func (u *User) Login() (*model.UserModel, error) {
 	if err != nil {
 		return nil, errors.New("密码错误或用户不存在")
 	}
+
 	userp.PassWord = ""
 
 	return userp, nil
 
+}
+
+func (u *User) ChangePass(newpassword string) error {
+
+	user, err := model.CreateUserModel(u.UserName, u.Password, "", "")
+
+	if err != nil {
+		return err
+	}
+
+	oldUser, usererr := user.FindUserByPasswordAndUsername()
+
+	if usererr != nil {
+		return errors.New("用户不存在或者密码错误(请检查用户名和密码)")
+	}
+
+	newUser, err := model.CreateUserModel(u.UserName, newpassword, oldUser.NickName, oldUser.AvatarUrl)
+
+	if err != nil {
+		return err
+	}
+
+	err = oldUser.UpdateUser(newUser)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

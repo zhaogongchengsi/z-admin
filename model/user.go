@@ -39,16 +39,18 @@ func NewUserModel(u, p, n, a string) (*UserModel, error) {
 	}, nil
 }
 
-// 创建一个用户 不生成uid 和不需要 昵称和头像 用于查询用户基本信息
-func CreateUserModel(username, password string) (*UserModel, error) {
+// 创建一个用户 不生成uid  用于查询用户基本信息
+func CreateUserModel(username, password, n, a string) (*UserModel, error) {
 	pwd, err := utils.Md5(password)
 	if err != nil {
 		return nil, err
 	}
 
 	return &UserModel{
-		UserName: username,
-		PassWord: pwd,
+		UserName:  username,
+		PassWord:  pwd,
+		NickName:  n,
+		AvatarUrl: a,
 	}, nil
 }
 
@@ -69,8 +71,8 @@ func FindUserByName(name string) (*UserModel, error) {
 }
 
 // 更新用户信息
-func (m *UserModel) UpdateUser() error {
-	return global.DBEngine.Model(m).Updates(m).Error
+func (m *UserModel) UpdateUser(newuser *UserModel) error {
+	return global.DBEngine.Model(m).Updates(&newuser).Error
 }
 
 func (m *UserModel) GetUserList() ([]UserModel, error) {

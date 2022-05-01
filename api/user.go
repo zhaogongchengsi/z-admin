@@ -13,9 +13,11 @@ func UserRouter(c *gin.Engine) {
 	{
 		user.POST("/register", CreateUser)
 		user.POST("/login", Login)
+		user.POST("/changepass", ChangePass)
 	}
 }
 
+// 注册
 func CreateUser(c *gin.Context) {
 	var user controller.User
 	err := c.ShouldBindJSON(&user)
@@ -35,6 +37,7 @@ func CreateUser(c *gin.Context) {
 	response.SuccessResponse(u).Send(c)
 }
 
+// 登陆
 func Login(c *gin.Context) {
 	var user controller.User
 	err := c.ShouldBindJSON(&user)
@@ -52,4 +55,34 @@ func Login(c *gin.Context) {
 	}
 
 	response.SuccessResponse(u).Send(c)
+}
+
+type ChangePassStruct struct {
+	Password    string `json:"password"`
+	Newpassword string `json:"newpassword"`
+	Username    string `json:"username"`
+}
+
+// 修改密码
+func ChangePass(c *gin.Context) {
+	var user ChangePassStruct
+	err := c.ShouldBindJSON(&user)
+	if err != nil {
+		response.ErrorResponse(err).Send(c)
+		return
+	}
+
+	newuser := controller.User{
+		UserName: user.Username,
+		Password: user.Password,
+	}
+
+	err = newuser.ChangePass(user.Newpassword)
+
+	if err != nil {
+		response.FailureResponse(err.Error()).Send(c)
+		return
+	}
+
+	response.SuccessResponse(nil).Send(c)
 }
