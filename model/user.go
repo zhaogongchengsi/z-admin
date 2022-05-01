@@ -22,7 +22,7 @@ func CreateUserTable() error {
 	return global.DBEngine.AutoMigrate(&UserModel{})
 }
 
-// 创建用户： 账号 密码 昵称 头像
+// 创建新用户： 账号 密码 昵称 头像 用于注册新用户
 func NewUserModel(u, p, n, a string) (*UserModel, error) {
 	id := uuid.NewV4()        // 用户唯一标识
 	newp, err := utils.Md5(p) // 加密密码 不可逆
@@ -36,6 +36,19 @@ func NewUserModel(u, p, n, a string) (*UserModel, error) {
 		PassWord:  newp,
 		NickName:  n,
 		AvatarUrl: a,
+	}, nil
+}
+
+// 创建一个用户 不生成uid 和不需要 昵称和头像 用于查询用户基本信息
+func CreateUserModel(username, password string) (*UserModel, error) {
+	pwd, err := utils.Md5(password)
+	if err != nil {
+		return nil, err
+	}
+
+	return &UserModel{
+		UserName: username,
+		PassWord: pwd,
 	}, nil
 }
 

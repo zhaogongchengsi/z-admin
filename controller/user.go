@@ -38,7 +38,7 @@ func (u *User) Register() (user *model.UserModel, err error) {
 
 func (u *User) Login() (*model.UserModel, error) {
 
-	user, err := model.NewUserModel(u.UserName, u.Password, "", "")
+	user, err := model.CreateUserModel(u.UserName, u.Password)
 
 	if err != nil {
 		return nil, err
