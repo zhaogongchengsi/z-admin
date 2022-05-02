@@ -7,7 +7,7 @@ import (
 )
 
 func CreateRoute(c *gin.Engine) {
-	// User Router Group (api/user)
+	// User Router Group (api/)
 	api.UserRouter(c)
 	api.OtherRouter(c)
 }
