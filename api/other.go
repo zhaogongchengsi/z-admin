@@ -12,6 +12,7 @@ func OtherRouter(c *gin.Engine) {
 	user := c.Group("/api/other")
 	{
 		user.GET("/appinit", InitApp)
+		user.GET("/verify", Verify)
 	}
 }
 
@@ -24,4 +25,26 @@ func InitApp(c *gin.Context) {
 	}
 
 	response.SuccessResponse(nil).Send(c)
+}
+
+type VerifyType struct {
+	Id   string `json:"id"`
+	Code string `json:"code"`
+}
+
+func Verify(c *gin.Context) {
+	o := new(controller.OtherController)
+	var v = VerifyType{}
+
+	id, code, err := o.Verify()
+
+	if err != nil {
+		response.FailureResponse(err.Error()).Send(c)
+		return
+	}
+
+	v.Id = id
+	v.Code = code
+
+	response.SuccessResponse(v).Send(c)
 }

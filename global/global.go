@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/mojocn/base64Captcha"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -16,24 +17,13 @@ const (
 )
 
 var (
-	Server   *Service
-	Db       *DataBase
-	DBEngine *gorm.DB
+	Server      *Service
+	Db          *DataBase
+	DBEngine    *gorm.DB
+	CaptchaConf *Captcha
+	// 这里可以用radis缓存
+	VerifyStore = base64Captcha.DefaultMemStore
 )
-
-// 感觉这种写法不是很好
-// var configs = map[string]interface{}{
-// 	"Service":  &Service{},
-// 	"DateBase": &DataBase{},
-// }
-
-// func GetConfig(ConfigName string) (interface{}, error) {
-// 	value, ok := configs[ConfigName]
-// 	if !ok {
-// 		return nil, errors.New("config not found")
-// 	}
-// 	return value, nil
-// }
 
 func InitGlobal() error {
 	s, err := NewSetting(ConfigName, ConfigPath, ConfigType)
@@ -50,6 +40,13 @@ func InitGlobal() error {
 	err = s.ReadSetting("DateBase", &Db)
 
 	if err != nil {
+		return err
+	}
+
+	err = s.ReadSetting("Captcha", &CaptchaConf)
+
+	if err != nil {
+		fmt.Printf("读取验证码配置失败 %v", err)
 		return err
 	}
 

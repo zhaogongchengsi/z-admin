@@ -17,3 +17,11 @@ type DataBase struct {
 	SingularTable bool
 	Charset       string
 }
+
+type Captcha struct {
+	ImgWidth  int
+	ImgHeight int
+	KeyLong   int
+	MaxSkew   float64
+	DotCount  int
+}

@@ -16,6 +16,16 @@ export default defineConfig(() => {
     '@': resolvePath('src'),
   }
 
+  // 这个代理配置不生效 真奇怪
+  const proxy = {
+    '/api': {
+      target: 'http://localhost:9090',
+      changeOrigin: true,
+      rewrite: (path: string) => path.replace(/^\/api/, '')
+    },
+  }
+
+
   return {
     plugins: [
       vue(),
@@ -28,6 +38,12 @@ export default defineConfig(() => {
     ],
     resolve: {
       alias,
-    }
+    },
+    server: {
+      port: 3050,
+      host: '0.0.0.0',
+      proxy
+    },
+    proxy
   }
 })

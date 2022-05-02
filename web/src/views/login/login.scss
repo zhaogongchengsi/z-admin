@@ -47,9 +47,15 @@
 }
 
 .verifi {
-    width: 100px;
-    height: 30px;
+    width: 110px;
+    height: 40px;
     margin-left: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    cursor: pointer;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
 } 
