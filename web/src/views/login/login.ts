@@ -9,6 +9,11 @@ export interface Login {
     [key: string]: any
 }
 
+export interface verify {
+    verifyId: string;
+    verify: string;
+}
+
 export const rules = {
     username: {
         type: 'string',
@@ -26,3 +31,4 @@ export const rules = {
         message: '请输入验证码',
     }
 }
+

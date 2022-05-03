@@ -37,7 +37,7 @@ func CreateUser(c *gin.Context) {
 	response.SuccessResponse(u).Send(c)
 }
 
-// 登陆
+// Login 登陆
 func Login(c *gin.Context) {
 	var user controller.User
 	err := c.ShouldBindJSON(&user)

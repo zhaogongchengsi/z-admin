@@ -12,10 +12,10 @@
               <el-input v-model="LoginForm.password" placeholder="请输入密码"></el-input>
             </el-form-item>
             <el-form-item label="验证码" :rules="rules.verify" prop="verify">
-              <div class="verifi-input">
+              <div class="verifi-input" >
                 <el-input v-model="LoginForm.verify" placeholder="请输入验证码"></el-input>
-                <div class="verifi">
-                  <img :src="code.code" alt="">
+                <div class="verifi" @click="getVerify">
+                  <img :src="codeImg.code" alt="">
                 </div>
               </div>
             </el-form-item>
@@ -32,7 +32,8 @@ import "./login.scss";
 import { reactive, ref, onMounted, } from "vue";
 import { Login, rules } from "./login";
 import { FormInstance } from "element-plus";
-import { verify } from "@/api/index";
+import { verify, login } from "@/api/login";
+import { ElMessage } from 'element-plus'
 
 const LoginForm = reactive<Login>({
   username: "",
@@ -40,7 +41,7 @@ const LoginForm = reactive<Login>({
   verify: "",
 });
 
-const code = ref({
+const codeImg = reactive({
   id: "",
   code: "",
 })
@@ -51,7 +52,28 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log('submit!')
+
+      const data = {
+        verify_Id: codeImg.id,
+        ...LoginForm,
+      }
+
+      login(data).then((res: any) => {
+        if (res.code != 200) {
+          ElMessage.error(res.msg)
+          getVerify()
+        } else {
+          ElMessage.success({
+            message: "登录成功",
+          })
+        }
+        
+      }).catch((err: any) => {
+        getVerify()
+        console.log(err)
+      })
+
+
     } else {
       console.log('error submit!', fields)
     }
@@ -59,9 +81,17 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 };
 
 
-onMounted(async () => {
-  const codeData = await verify()
-  code.value = codeData.data
-});
+const getVerify = async () => {
+  try {
+      const codeData = await verify()
+      const { id, code } = codeData.data
+      codeImg.id = id
+      codeImg.code = code
+  } catch (e) {
+    console.log(e)
+  }
+
+}
+onMounted(getVerify);
 
 </script>

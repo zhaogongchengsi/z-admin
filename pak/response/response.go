@@ -1,6 +1,8 @@
 package response
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -36,5 +38,5 @@ func ErrorResponse(err error) *Response {
 }
 
 func (r *Response) Send(ctx *gin.Context) {
-	ctx.JSON(r.Code, r)
+	ctx.JSON(http.StatusOK, r)
 }

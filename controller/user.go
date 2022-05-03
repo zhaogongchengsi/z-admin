@@ -2,6 +2,7 @@ package controller
 
 import (
 	"errors"
+	"z-admin/global"
 	"z-admin/model"
 
 	"gorm.io/gorm"
@@ -12,6 +13,8 @@ type User struct {
 	Password  string `json:"password" binding:"required"`
 	NickName  string `json:"nickname"`
 	AvatarUrl string `json:"avatar"`
+	Verify    string `json:"verify"`
+	VerifyId  string `json:"verify_Id"`
 }
 
 // 注册用户
@@ -37,6 +40,14 @@ func (u *User) Register() (user *model.UserModel, err error) {
 }
 
 func (u *User) Login() (*model.UserModel, error) {
+
+	if len(u.Verify) == 0 && len(u.VerifyId) == 0 {
+		return nil, errors.New("验证码不能为空")
+	}
+
+	if !global.VerifyStore.Verify(u.VerifyId, u.Verify, true) {
+		return nil, errors.New("验证码错误")
+	}
 
 	user, err := model.CreateUserModel(u.UserName, u.Password, "", "")
 
