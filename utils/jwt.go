@@ -44,3 +44,15 @@ func CreateJwt(uid uuid.UUID, username string) (string, error) {
 	token, err := tokenClaims.SignedString([]byte(global.JwtConf.SigningKey))
 	return token, err
 }
+
+func ParseToken(token string) (*Claims, error) {
+	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(global.JwtConf.SigningKey), nil
+	})
+	if tokenClaims != nil {
+		if claims, ok := tokenClaims.Claims.(*Claims); ok && tokenClaims.Valid {
+			return claims, nil
+		}
+	}
+	return nil, err
+}

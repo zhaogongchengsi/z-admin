@@ -34,7 +34,6 @@ import { Login, rules } from "./login";
 import { FormInstance } from "element-plus";
 import { verify, login } from "@/api/login";
 import { userStore } from "@/pinia/index";
-import { ElMessage } from 'element-plus'
 import { useRouter } from "vue-router";
 
 const user = userStore()

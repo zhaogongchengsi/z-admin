@@ -2,6 +2,7 @@ package api
 
 import (
 	"z-admin/controller"
+	"z-admin/middleware"
 	"z-admin/pak/response"
 	"z-admin/utils"
 
@@ -14,7 +15,7 @@ func UserRouter(c *gin.Engine) {
 	{
 		user.POST("/register", CreateUser)
 		user.POST("/login", Login)
-		user.POST("/changepass", ChangePass)
+		user.POST("/changepass", ChangePass).Use(middleware.Authorization())
 	}
 }
 

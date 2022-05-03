@@ -9,6 +9,29 @@ const Http = axios.create({
     timeout: 5000,
 });
 
+
+// 响应拦截器
+Http.interceptors.response.use(
+    (response: any) => {
+        return response;
+    },
+    (error: any) => {
+        return Promise.reject(error);
+    }
+)
+
+
+// 请求拦截器
+Http.interceptors.request.use(
+    (config) => {
+        config.headers['token'] = `${localStorage.getItem("z_token")}`;
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+)
+
 export const Get = (url: string) => {
     return new Promise<Response<any>>((resolve, reject) => {
         Http.get(url).then(res => {

@@ -9,10 +9,11 @@ import (
 
 func OtherRouter(c *gin.Engine) {
 	// User Router Group (api/user)
-	user := c.Group("/api/other")
+	other := c.Group("/api/other")
+
 	{
-		user.GET("/appinit", InitApp)
-		user.GET("/verify", Verify)
+		other.GET("/appinit", InitApp)
+		other.GET("/verify", Verify)
 	}
 }
 

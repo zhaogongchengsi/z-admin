@@ -29,6 +29,6 @@ JWT:
   # 盐值
   SigningKey: z_admin_abc123
   # 过期时间 小时为单位
-  ExpiresAt:
+  ExpiresAt: 3
   # 签发人
   Issuer: z_admin
