@@ -33,11 +33,17 @@ import { reactive, ref, onMounted, } from "vue";
 import { Login, rules } from "./login";
 import { FormInstance } from "element-plus";
 import { verify, login } from "@/api/login";
+import { userStore } from "@/pinia/index";
 import { ElMessage } from 'element-plus'
+import { useRouter } from "vue-router";
+
+const user = userStore()
+const router = useRouter()
+
 
 const LoginForm = reactive<Login>({
-  username: "",
-  password: "",
+  username: "admin",
+  password: "abc123",
   verify: "",
 });
 
@@ -50,32 +56,20 @@ const fromRef = ref<FormInstance>();
 
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async (valid, fields) => {
     if (valid) {
-
-      const data = {
+      const data:Login  = {
         verify_Id: codeImg.id,
         ...LoginForm,
       }
-
-      login(data).then((res: any) => {
-        if (res.code != 200) {
-          ElMessage.error(res.msg)
-          getVerify()
-        } else {
-          ElMessage.success({
-            message: "登录成功",
-          })
-        }
-        
-      }).catch((err: any) => {
+      const isLogin = await user.getUser(data)
+      if (isLogin) {
+        router.push("/")
+      } else {
         getVerify()
-        console.log(err)
-      })
-
-
+      }
     } else {
-      console.log('error submit!', fields)
+      getVerify()
     }
   })
 };

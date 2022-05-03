@@ -23,6 +23,7 @@ var (
 	CaptchaConf *Captcha
 	// 这里可以用radis缓存
 	VerifyStore = base64Captcha.DefaultMemStore
+	JwtConf     *JWT
 )
 
 func InitGlobal() error {
@@ -47,6 +48,13 @@ func InitGlobal() error {
 
 	if err != nil {
 		fmt.Printf("读取验证码配置失败 %v", err)
+		return err
+	}
+
+	err = s.ReadSetting("JWT", &JwtConf)
+
+	if err != nil {
+		fmt.Printf("读取JWT配置失败 %v", err)
 		return err
 	}
 

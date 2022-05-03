@@ -1,10 +1,10 @@
 import { Get, Post } from "../utils/service";
+import { Response } from "@/types/index";
 
-
-export const verify = () => {
+export function verify () :Promise<Response<any>> {
     return Get(`other/verify`);
 }
 
-export const login = (data: any) => {
+export function login <T> (data: T) :Promise<Response<any>> {
     return Post(`user/login`, data);
 }

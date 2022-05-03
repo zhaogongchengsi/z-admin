@@ -25,3 +25,9 @@ type Captcha struct {
 	MaxSkew   float64
 	DotCount  int
 }
+
+type JWT struct {
+	SigningKey string
+	ExpiresAt  int
+	Issuer     string
+}

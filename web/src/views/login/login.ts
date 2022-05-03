@@ -14,6 +14,11 @@ export interface verify {
     verify: string;
 }
 
+export interface LoginRes {
+    user: any;
+    token: string;
+}
+
 export const rules = {
     username: {
         type: 'string',

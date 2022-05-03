@@ -25,3 +25,10 @@ Captcha:
   KeyLong: 4
   MaxSkew: 0.4
   DotCount: 40
+JWT:
+  # 盐值
+  SigningKey: z_admin_abc123
+  # 过期时间 小时为单位
+  ExpiresAt:
+  # 签发人
+  Issuer: z_admin

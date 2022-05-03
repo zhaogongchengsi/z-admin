@@ -3,6 +3,7 @@ package api
 import (
 	"z-admin/controller"
 	"z-admin/pak/response"
+	"z-admin/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -54,7 +55,19 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	response.SuccessResponse(u).Send(c)
+	token, err := utils.CreateJwt(u.UId, u.UserName)
+
+	if err != nil {
+		response.FailureResponse("token 签发失败").Send(c)
+		return
+	}
+
+	res := map[string]interface{}{
+		"z_token": token,
+		"user":    u,
+	}
+
+	response.SuccessResponse(res).Send(c)
 }
 
 type ChangePassStruct struct {
