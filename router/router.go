@@ -7,10 +7,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateRoute(c *gin.Engine) {
+func CreateRoute() *gin.Engine {
+	r := gin.Default()
 	// User Router Group (api/)
-	c.Use(middleware.Cors()) // 全局中间件
-	api.UserRouter(c)
-	api.OtherRouter(c)
-	api.Auth(c)
+	r.Use(middleware.Cors()) // 全局中间件
+	api.UserRouter(r)
+	api.OtherRouter(r)
+	api.Auth(r)
+	return r
 }

@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"z-admin/controller"
 	"z-admin/middleware"
 	"z-admin/pak/response"
@@ -18,16 +17,6 @@ func Auth(c *gin.Engine) {
 }
 
 func Role(c *gin.Context) {
-
-	username, nok := c.Get("username")
-	uid, uok := c.Get("uid")
-
-	if !nok || !uok {
-		response.FailureResponse("获取用户信息失败").Send(c)
-		return
-	}
-
-	fmt.Printf("username: %s, uid: %s", username, uid)
 
 	role := new(controller.RoleController)
 	err := role.Rule()

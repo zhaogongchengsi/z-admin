@@ -1,8 +1,10 @@
 package global
 
 type Service struct {
-	Port int
-	Mode string
+	Port         int
+	Mode         string
+	ReadTimeout  int
+	WriteTimeout int
 }
 
 type DataBase struct {

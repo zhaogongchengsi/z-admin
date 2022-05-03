@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"time"
 	"z-admin/global"
 	"z-admin/router"
 
@@ -14,16 +16,25 @@ func init() {
 
 	if err != nil {
 		fmt.Printf("初始化失败 %v", err)
+		panic(err)
 	}
 
 }
 
 func main() {
+
 	gin.SetMode(global.Server.Mode)
-	r := gin.Default()
-	router.CreateRoute(r)
-	err := r.Run(fmt.Sprintf(":%v", global.Server.Port))
-	if err != nil {
-		fmt.Printf("启动失败 %v", err)
+
+	s := &http.Server{
+		Addr:           ":" + fmt.Sprintf("%d", global.Server.Port),
+		Handler:        router.CreateRoute(),
+		ReadTimeout:    time.Duration(global.Server.ReadTimeout),
+		WriteTimeout:   time.Duration(global.Server.WriteTimeout),
+		MaxHeaderBytes: 1 << 20,
 	}
+
+	if err := s.ListenAndServe(); err != nil {
+		fmt.Printf("服务器启动失败 %v", err)
+	}
+
 }

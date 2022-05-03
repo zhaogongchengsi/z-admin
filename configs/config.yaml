@@ -1,6 +1,8 @@
 Service:
   Port: 9090
   Mode: debug
+  ReadTimeout: 60
+  WriteTimeout: 60
 DateBase:
   # 数据库的名字
   DbName: z-admin
@@ -19,7 +21,9 @@ DateBase:
   # 是否开启复数表名
   SingularTable: true
   Charset: utf8mb4
+# 验证码
 Captcha:
+  # 生成的图片尺寸
   ImgWidth: 110
   ImgHeight: 40
   KeyLong: 4
