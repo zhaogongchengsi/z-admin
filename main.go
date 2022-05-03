@@ -6,6 +6,7 @@ import (
 	"time"
 	"z-admin/global"
 	"z-admin/router"
+	"z-admin/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,6 +33,8 @@ func main() {
 		WriteTimeout:   time.Duration(global.Server.WriteTimeout),
 		MaxHeaderBytes: 1 << 20,
 	}
+
+	utils.Print()
 
 	if err := s.ListenAndServe(); err != nil {
 		fmt.Printf("服务器启动失败 %v", err)
