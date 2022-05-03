@@ -5,9 +5,9 @@ DateBase:
   # 数据库的名字
   DbName: z-admin
   UserName: root
-  PassWord: Zzh3132..
+  PassWord: XXX
   # 数据库的连接路径
-  Url: gz-cynosdbmysql-grp-lhkcx3ln.sql.tencentcdb.com
+  Url: xxx
   # 数据库连接的端口
   Port: 26832
   # 用于设置连接池中空闲连接的最大数量。
