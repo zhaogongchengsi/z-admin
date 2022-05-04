@@ -28,7 +28,7 @@ func main() {
 	router := router.CreateRoute()
 
 	s := &http.Server{
-		Addr:           ":" + fmt.Sprintf("%d", global.Server.Port),
+		Addr:           fmt.Sprintf(":%d", global.Server.Port),
 		Handler:        router,
 		ReadTimeout:    time.Duration(global.Server.ReadTimeout) * time.Second,
 		WriteTimeout:   time.Duration(global.Server.WriteTimeout) * time.Second,
@@ -40,7 +40,5 @@ func main() {
 	if err := s.ListenAndServe(); err != nil {
 		fmt.Printf("服务器启动失败 %v", err)
 	}
-
-	// router.Run(fmt.Sprintf(":%d", global.Server.Port))
 
 }

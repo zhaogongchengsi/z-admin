@@ -4,13 +4,21 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { resolve } from 'path'
+import { config } from 'dotenv'
+import { env } from 'process'
 
-function resolvePath(path: string) {
+function resolvePath(path: string) :string {
   return resolve(__dirname, path)
 }
 
-// https://vitejs.dev/config/
 export default defineConfig(() => {
+
+  config({
+    path: resolvePath('.env.development')
+  })
+
+  const port = parseInt(env["VITE_SERVER_PORT"])
+  const host = env["VITE_SERVER_HOST"]
 
   const alias = {
     '@': resolvePath('src'),
@@ -40,10 +48,9 @@ export default defineConfig(() => {
       alias,
     },
     server: {
-      port: 3050,
-      host: '0.0.0.0',
+      port,
+      host,
       proxy
-    },
-    proxy
+    }
   }
 })
