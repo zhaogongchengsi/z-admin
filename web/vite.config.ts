@@ -12,7 +12,7 @@ function resolvePath(path: string) :string {
 }
 
 export default defineConfig(() => {
-
+  // 先读取环境变量
   config({
     path: resolvePath('.env.development')
   })

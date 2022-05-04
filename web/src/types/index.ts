@@ -1,6 +1,3 @@
-import { AxiosResponse } from "axios";
-
-
 
 export interface Response <T> {
     code: number;
@@ -8,3 +5,18 @@ export interface Response <T> {
     msg: string;
 }
 
+
+export interface MenuOptions {
+    label: string
+    icon?: string
+    path?: string
+    children?: MenuOptions[]
+}
+
+export interface AsideMenuProps {
+    collapse: boolean
+    activeTextColor: string
+    textColor: string
+    backgroundColor: string
+    collapseTransition: boolean
+}

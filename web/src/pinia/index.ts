@@ -9,3 +9,4 @@ export function usePinia (app: App) {
 }
 
 export { userStore } from "./user"
+export { mainStore } from "./main"
