@@ -21,4 +21,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.yaml
 configs/config.yaml

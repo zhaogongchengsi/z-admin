@@ -1,5 +1,13 @@
 package model
 
 func CreateTables() error {
-	return CreateUserTable()
+	err := CreateUserTable()
+	if err != nil {
+		return err
+	}
+	err = CreateMenuTable()
+	if err != nil {
+		return err
+	}
+	return nil
 }
