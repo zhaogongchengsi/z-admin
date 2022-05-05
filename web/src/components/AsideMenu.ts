@@ -1,6 +1,7 @@
-import { defineComponent, h, RendererElement, RendererNode, VNode } from 'vue';
+import { defineComponent, h, RendererElement, RendererNode, VNode, component } from 'vue';
 import { ElMenu, ElMenuItem, ElSubMenu, ElMenuItemGroup, ElIcon } from "element-plus"
 import type { AsideMenuProps, MenuOptions } from "@/types/index"
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 
 type vNode = VNode<RendererNode, RendererElement, {
@@ -37,8 +38,8 @@ export default defineComponent({
             }
         }
     },
-    setup(props, { attrs }) {
-
+    setup(props, context) {
+    
         return () => {
             return CreateMenu(props, CreateAsideMenu(props.menuOptions))
         }
@@ -56,6 +57,7 @@ function CreateAsideMenu(list: MenuOptions[]) :VNode[] {
                 index: item.path,
                 path: item.path,
                 label: item.label,
+                icon: item.icon,
             }, CreateAsideMenu(item.children))
         } else {
             return CreateMenuItem({
@@ -94,6 +96,7 @@ interface MenuSubProps {
     index: any
     path: string
     label: string
+    icon: string
 }
 
 function CreateSubMenu(props: MenuSubProps, children: any[]) {
@@ -105,7 +108,10 @@ function CreateSubMenu(props: MenuSubProps, children: any[]) {
             },item))
         },
         title: () => {
-            return CreateMenuLabel(props.label)
+            return [
+                CreateMenuIcon(props.icon),
+                CreateMenuLabel(props.label),
+            ]
         }
     })
 }
@@ -113,4 +119,13 @@ function CreateSubMenu(props: MenuSubProps, children: any[]) {
 
 function CreateMenuLabel(label: string) {
     return h('span', {}, label)
+}
+
+function CreateMenuIcon(icon: string) {
+    
+    return h(ElIcon, {}, {
+        default: () => {
+            return h(ElementPlusIconsVue[icon])
+        }
+    })
 }
