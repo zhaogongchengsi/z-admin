@@ -1,5 +1,5 @@
 <template>
-  <el-menu-item :index="menuInfo.path">
+  <el-menu-item :index="index">
     <el-icon>
       <component :is="menuInfo.icon" />
     </el-icon>
@@ -13,10 +13,16 @@ export default defineComponent({
   name: "AsideItemMenu",
   props: {
     menuInfo: {
-        type: Object,
-        default: () => ({}),
+      type: Object,
+      default: () => ({}),
+    },
+    index: {
+      type: String,
+      default: "",
     },
   },
-  setup(props) {},
+  setup(props) {
+    
+  },
 });
 </script>

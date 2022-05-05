@@ -5,8 +5,12 @@
       <el-aside :width="main.coll ? '65px' : '200px' " class="home-aside">
         <div class="home-aside-head">1232</div>
         <aside-menu
-
-          :menu-options="menuList"
+          :menus="menuList"
+          :text-color="main.textColor"
+          :background-color="main.backgroundColor"
+          :active-text-color="main.activeTextColor"
+          :collapse="main.coll"
+          :router="true"
         />
       </el-aside>
       <el-container>
@@ -30,12 +34,7 @@ import { Fold } from "@element-plus/icons-vue";
 import { mainStore } from "@/pinia/index";
 import AsideMenu from "@/components/asideMenus/index.vue";
 
-
-          // :active-text-color="main.activeTextColor"
-          // :background-color="main.backgroundColor"
-          // :text-color="main.textColor"
-          // :collapse-transition="false"
-          // :collapse="main.coll"
+const main = mainStore();
 
 const menuList = [
   {
@@ -53,6 +52,13 @@ const menuList = [
         hidden: true,
       },
     ],
+  },
+  {
+        name: "abc5",
+        path: "/abc546",
+        icon: "Search",
+        hidden: false,
+        label: "其他2",
   },
   {
     name: "abc",
@@ -79,7 +85,7 @@ const menuList = [
   },
 ];
 
-const main = mainStore();
+
 </script>
 
 <style scoped lang="scss">
@@ -110,6 +116,7 @@ const main = mainStore();
   height: calc(100vh - 60px);
   padding: var(--home-padding) 0 var(--home-padding) var(--home-padding);
   border-top: 1px solid var(--el-border-color);
+  border-left: 1px solid var(--el-border-color);
 }
 
 .hcontainer {

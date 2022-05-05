@@ -6,7 +6,7 @@
       </el-icon>
       <span>{{menuInfo.label}}</span>
     </template>
-    <item-menu v-for="(item, index) in menuInfo.children" :key="index" :menuInfo="item" />
+    <item-menu v-for="(item, index) in menuInfo.children" :key="index" :menuInfo="item" :index="item.path" />
   </el-sub-menu>
 </template>
 
@@ -26,7 +26,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    //   console.log(props.menuInfo);
+    
   },
 });
 </script>
