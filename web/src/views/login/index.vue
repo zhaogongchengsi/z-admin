@@ -1,7 +1,9 @@
 <template>
   <div class="login-container">
     <div class="login-center">
-      <div class="login-x login-img">这里放图片</div>
+      <div class="login-x login-img">
+        <img src="/z-admin.png" alt="z-admin" />
+      </div>
       <div class="login-x login-from">
         <div class="from">
           <el-form label-position="top" :model="LoginForm" :rules="rules" ref="fromRef" size="large" >
