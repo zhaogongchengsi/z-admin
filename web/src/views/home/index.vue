@@ -5,11 +5,7 @@
       <el-aside :width="main.coll ? '65px' : '200px' " class="home-aside">
         <div class="home-aside-head">1232</div>
         <aside-menu
-          :active-text-color="main.activeTextColor"
-          :background-color="main.backgroundColor"
-          :text-color="main.textColor"
-          :collapse-transition="false"
-          :collapse="main.coll"
+
           :menu-options="menuList"
         />
       </el-aside>
@@ -32,7 +28,14 @@
 <script setup lang="ts">
 import { Fold } from "@element-plus/icons-vue";
 import { mainStore } from "@/pinia/index";
-import AsideMenu from "@/components/AsideMenu";
+import AsideMenu from "@/components/asideMenus/index.vue";
+
+
+          // :active-text-color="main.activeTextColor"
+          // :background-color="main.backgroundColor"
+          // :text-color="main.textColor"
+          // :collapse-transition="false"
+          // :collapse="main.coll"
 
 const menuList = [
   {

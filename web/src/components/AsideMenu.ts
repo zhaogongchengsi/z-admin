@@ -76,7 +76,6 @@ function CreateMenu(props:AsideMenuProps, children: vNode[]) {
     })
 }
 
-
 interface MenuItemProps {
     index?: any
     label?: string
