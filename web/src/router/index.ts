@@ -22,7 +22,7 @@ export async function setUpRouter (app:App) {
 
     const router = createRouter({
         history: createWebHashHistory(),
-        routes: staticRouter.concat(routes), // `routes: routes` 的缩写
+        routes: staticRouter.concat(routes),
     })
 
     router.beforeEach(beforeEach)

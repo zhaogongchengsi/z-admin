@@ -30,48 +30,82 @@ export default defineComponent({
             type: Boolean,
             default: true,
         },
-        MenuOptions: {
-            type: Object,
+        menuOptions: {
+            type: Array,
             default: () => {
-                return {}
+                return []
             }
         }
     },
     setup(props, { attrs }) {
 
-        const menuItemList = props.MenuOptions.map((item: MenuOptions) => {
-            if (item.children && item.children.length > 0) {
-                return CreateSubMenu(props, item.children)
-            } else {
-                return CreateMenuItem(props, item)
-            }
-        })
-
         return () => {
-            return CreateMenu(props, menuItemList)
+            return CreateMenu(props, CreateAsideMenu(props.menuOptions))
         }
     }
 })
 
-function CreateMenu(props:AsideMenuProps, children: vNode[]) {
-    return h(ElMenu, props, children)
+
+function CreateAsideMenu(list: MenuOptions[]) :VNode[] {
+    return list.map((item: MenuOptions) => {
+        // if (!item.disabled) {
+        //     return undefined
+        // }
+        if (item.children && item.children.length > 0) {
+            return CreateSubMenu({
+                index: item.path,
+                path: item.path,
+                label: item.label,
+            }, CreateAsideMenu(item.children))
+        } else {
+            return CreateMenuItem({
+                path: item.path,
+                index: item.path,
+            }, item.label)
+        }
+    })
 }
 
-function CreateMenuItem(props: any, label:any) {
-    return h(ElMenuItem, props, { 
+function CreateMenu(props:AsideMenuProps, children: vNode[]) {
+    return h(ElMenu, props, {
+        default: () => {
+            return children
+        }
+    })
+}
+
+
+interface MenuItemProps {
+    index?: any
+    label?: string
+    path?: string
+    disabled?: boolean
+}
+
+function CreateMenuItem(props: MenuItemProps, label:any) {
+    return h(ElMenuItem, props, {
         default: () => {
            return CreateMenuLabel(label)
         }
     })
 }
 
-function CreateSubMenu(props: any, children: vNode[]) {
+interface MenuSubProps {
+    index: any
+    path: string
+    label: string
+}
+
+function CreateSubMenu(props: MenuSubProps, children: any[]) {
     return h(ElSubMenu, props, {
         default: () => {
-            return children.map(item => CreateMenuItem(props,item))
+            return children.map((item) => CreateMenuItem({
+                index: item.path,
+                path: item.path,
+            },item))
         },
-        title: (label: string) => {
-            return CreateMenuLabel(label)
+        title: () => {
+            return CreateMenuLabel(props.label)
         }
     })
 }

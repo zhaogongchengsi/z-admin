@@ -40,11 +40,13 @@ const menuList = [
         path: "/home",
         icon: "el-icon-s-home",
         label: "首页",
+        hidden: true,
         children: [
             {
                 name: "home2",
                 path: "/home3",
-                label: "首页2"
+                label: "首页2",
+                hidden: true,
             }
         ]
     },
@@ -53,10 +55,18 @@ const menuList = [
         path: "/abc",
         icon: "el-icon-s-home",
         label: "其他",
+        hidden: true,
         children: [
             {
                 name: "abc2",
                 path: "/abc3",
+                hidden: true,
+                label: "其他2"
+            },
+            {
+                name: "abc5",
+                path: "/abc5",
+                hidden: false,
                 label: "其他2"
             }
         ]

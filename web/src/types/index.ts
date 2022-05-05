@@ -19,4 +19,5 @@ export interface AsideMenuProps {
     textColor: string
     backgroundColor: string
     collapseTransition: boolean
+    MenuOptions: MenuOptions[]
 }
