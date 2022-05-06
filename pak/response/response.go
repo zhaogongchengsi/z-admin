@@ -12,7 +12,7 @@ type Response struct {
 	Data any    `json:"data"`
 }
 
-// 创建成功的响应
+// 创建成功的响应 响应码 200
 func SuccessResponse(data any) *Response {
 	return &Response{
 		Code: 200,
@@ -21,7 +21,7 @@ func SuccessResponse(data any) *Response {
 	}
 }
 
-// 创建失败的响应
+// 创建失败的响应 400
 func FailureResponse(msg string) *Response {
 	return &Response{
 		Code: 400,
@@ -29,7 +29,7 @@ func FailureResponse(msg string) *Response {
 	}
 }
 
-// 创建错误的响应
+// 创建错误的响应 500
 func ErrorResponse(err error) *Response {
 	return &Response{
 		Code: 500,

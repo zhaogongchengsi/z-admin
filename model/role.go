@@ -1,12 +1,18 @@
 package model
 
-import "z-admin/global"
+import (
+	"errors"
+	"z-admin/global"
+
+	"gorm.io/gorm"
+)
 
 type Role struct {
-	RoleName string  `json:"role_name"`
-	RoleId   int     `json:"role_id"`
-	RolePid  int     `json:"role_pid"`
-	MenuTree []*Menu `json:"menu_tree" gorm:"many2many:role_menu"` // 菜单树
+	gorm.Model
+	RoleName string `json:"role_name"`
+	RoleId   int    `json:"role_id"`
+	RolePid  int    `json:"role_pid"`
+	MenuTree []Menu `json:"menu_tree" gorm:"many2many:role_menu"` // 菜单树
 }
 
 // 创建角色表
@@ -34,14 +40,30 @@ func (r *Role) CreateRole() (role *Role, err error) {
 
 }
 
-func (r *Role) FindRoleList() ([]Role, error) {
-
-	var rs []Role
-	err := global.DBEngine.Where("role_id = ?", r.RoleId).Find(rs).Error
-
+func (r *Role) FindRoleById() (rs *Role, err error) {
+	var role Role
+	err = global.DBEngine.Model(role).First(&rs, "role_id = ?", r.RoleId).Error
 	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, errors.New("角色不存在")
+		}
 		return nil, err
 	}
-
 	return rs, nil
+}
+
+func (r *Role) FindRoleList() (rs []Role, err error) {
+	err = global.DBEngine.Find(&rs).Error
+	if err != nil && err == gorm.ErrRecordNotFound {
+		return nil, errors.New("无数据")
+	}
+	return rs, err
+}
+
+func (r *Role) FindRoleListByPid(pid int) (rs []Role, err error) {
+	err = global.DBEngine.Where("role_pid = ?", pid).Find(&rs).Error
+	if err != nil && err == gorm.ErrRecordNotFound {
+		return nil, errors.New("无数据")
+	}
+	return rs, err
 }

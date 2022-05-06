@@ -9,5 +9,8 @@ func CreateTables() error {
 	if err != nil {
 		return err
 	}
+	if err = CreateRoleTable(); err != nil {
+		return err
+	}
 	return nil
 }
