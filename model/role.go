@@ -2,7 +2,6 @@ package model
 
 import (
 	"errors"
-	"fmt"
 	"z-admin/global"
 
 	"gorm.io/gorm"
@@ -70,7 +69,9 @@ func (r *Role) FindRoleListByPid(pid int) (rs []Role, err error) {
 }
 
 func (r *Role) SetPermis() (err error) {
+
 	var ro Role
+
 	err = global.DBEngine.Model(ro).Preload("MenuTree").First(&ro, "role_id = ?", r.RoleId).Error
 
 	if err != nil {
@@ -80,9 +81,5 @@ func (r *Role) SetPermis() (err error) {
 		return err
 	}
 
-	ro.MenuTree = r.MenuTree
-
-	fmt.Printf("%+v\n", ro.MenuTree)
-
-	return global.DBEngine.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&ro).Error
+	return global.DBEngine.Model(&ro).Association("MenuTree").Replace(ro.MenuTree)
 }
