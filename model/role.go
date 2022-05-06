@@ -2,6 +2,7 @@ package model
 
 import (
 	"errors"
+	"fmt"
 	"z-admin/global"
 
 	"gorm.io/gorm"
@@ -42,7 +43,7 @@ func (r *Role) CreateRole() (role *Role, err error) {
 
 func (r *Role) FindRoleById() (rs *Role, err error) {
 	var role Role
-	err = global.DBEngine.Model(role).First(&rs, "role_id = ?", r.RoleId).Error
+	err = global.DBEngine.Model(role).Preload("MenuTree").First(&rs, "role_id = ?", r.RoleId).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return nil, errors.New("角色不存在")
@@ -53,7 +54,7 @@ func (r *Role) FindRoleById() (rs *Role, err error) {
 }
 
 func (r *Role) FindRoleList() (rs []Role, err error) {
-	err = global.DBEngine.Find(&rs).Error
+	err = global.DBEngine.Preload("MenuTree").Find(&rs).Error
 	if err != nil && err == gorm.ErrRecordNotFound {
 		return nil, errors.New("无数据")
 	}
@@ -61,9 +62,27 @@ func (r *Role) FindRoleList() (rs []Role, err error) {
 }
 
 func (r *Role) FindRoleListByPid(pid int) (rs []Role, err error) {
-	err = global.DBEngine.Where("role_pid = ?", pid).Find(&rs).Error
+	err = global.DBEngine.Preload("MenuTree").Where("role_pid = ?", pid).Find(&rs).Error
 	if err != nil && err == gorm.ErrRecordNotFound {
 		return nil, errors.New("无数据")
 	}
 	return rs, err
+}
+
+func (r *Role) SetPermis() (err error) {
+	var ro Role
+	err = global.DBEngine.Model(ro).Preload("MenuTree").First(&ro, "role_id = ?", r.RoleId).Error
+
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return errors.New("角色不存在")
+		}
+		return err
+	}
+
+	ro.MenuTree = r.MenuTree
+
+	fmt.Printf("%+v\n", ro.MenuTree)
+
+	return global.DBEngine.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&ro).Error
 }

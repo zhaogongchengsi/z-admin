@@ -42,6 +42,25 @@ func CreateRole(c *gin.Context) {
 
 func SetPermis(c *gin.Context) {
 
+	role := new(controller.RoleController)
+
+	err := c.ShouldBindJSON(role)
+
+	if err != nil {
+		response.FailureResponse(err.Error()).Send(c)
+		return
+	}
+
+	err = role.SetPermis()
+
+	if err != nil {
+		response.FailureResponse(err.Error()).Send(c)
+		return
+
+	}
+
+	response.SuccessResponse(nil).Send(c)
+
 }
 
 func FindRoleById(c *gin.Context) {
@@ -55,7 +74,7 @@ func FindRoleById(c *gin.Context) {
 
 	role.RoleId = id
 
-	r, err := role.FindRoleList()
+	r, err := role.FindRoleById()
 
 	if err != nil {
 		response.FailureResponse(err.Error()).Send(c)
