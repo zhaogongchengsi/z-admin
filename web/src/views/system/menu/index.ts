@@ -8,4 +8,5 @@ export interface Menu {
     hidden?: boolean;
     parent_id: number;
     redirect?: string;
+    label?: string;
 }

@@ -19,18 +19,24 @@ function getRouters() {
 }
 
 function getAsyncComponents(routers: any[], components: any) {
+
   return routers.map((item) => {
+    //   debugger
     if (item.component) {
       // 获取组件
       let _component = components.get(item.component);
       if (_component) {
         // 组件存在 则 替换
         item.component = _component;
+
       } else {
         // 不存在则替换成 报错组件 或者直接删除掉当前路由
-        // item.component = () => import("../views/NotFon.vue");
+        item.component = () => import("@/views/Notcomponent.vue");
+       
       }
     }
+
+
     if (item.children) {
       // 当子路由存在时，递归处理
       item.children = getAsyncComponents(item.children, components);
@@ -53,6 +59,7 @@ export const routerStore = defineStore("router", {
         return routerToTree(this.routerInfo);
     },
     getRouter ( ) :any[] {
+
         const componentsModels = getRouters()
 
         const r = JSON.parse(JSON.stringify(this.routerInfo));

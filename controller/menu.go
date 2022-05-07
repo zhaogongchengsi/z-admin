@@ -11,13 +11,14 @@ type MenuController struct {
 	Hidden     bool   `json:"hidden"`
 	ParentId   int    `json:"parent_id"`
 	Redirect   string `json:"redirect"`
+	Label      string `json:"label"`
 }
 
-func (m *MenuController) GetMenu() (menu []model.Menu, err error) {
+func (m *MenuController) GetMenu() (menu []model.MenuRes, err error) {
 	me := new(model.Menu)
 	return me.GetMenuList()
 }
 
 func (m *MenuController) CreateMenu() (menu model.Menu, err error) {
-	return model.CreateMenuModel(m.Name, m.Path, m.Meta, m.Components, m.Icon, m.Hidden, m.ParentId, m.Redirect).CreateMenu()
+	return model.CreateMenuModel(m.Name, m.Path, m.Meta, m.Components, m.Icon, m.Hidden, m.ParentId, m.Redirect, m.Label).CreateMenu()
 }

@@ -5,7 +5,7 @@
       <el-aside :width="main.coll ? '65px' : '200px' " class="home-aside">
         <div class="home-aside-head">1232</div>
         <aside-menu
-          :menus="menuList"
+          :menus="routerData.getRouteData"
           :text-color="main.textColor"
           :background-color="main.backgroundColor"
           :active-text-color="main.activeTextColor"
@@ -54,6 +54,9 @@
 import { Fold } from "@element-plus/icons-vue";
 import { mainStore } from "@/pinia/index";
 import AsideMenu from "@/components/asideMenus/index.vue";
+import { routerStore } from '@/pinia/index'
+
+const routerData = routerStore();
 
 const iconSize = 30;
 

@@ -16,27 +16,31 @@ type Menu struct {
 	Hidden     bool   `json:"hidden"`
 	ParentId   int    `json:"parent_id"`
 	Redirect   string `json:"redirect"`
+	Label      string `json:"label"`
 }
 
 var initMenuList = []Menu{
 	{
-		Name:       "系统管理",
-		Path:       "/system",
+		Name:       "system",
+		Path:       "system",
 		Meta:       "",
 		Components: "views/system/index.vue",
 		Icon:       "Apple",
 		Hidden:     false,
 		ParentId:   0,
+		Redirect:   "",
+		Label:      "系统管理",
 	},
 	{
 		Name:       "menu",
-		Path:       "/menu",
+		Path:       "menu",
 		Meta:       "",
-		Components: "views/system/menu/index",
+		Components: "views/system/menu/index.vue",
 		Icon:       "Apple",
 		Hidden:     false,
 		ParentId:   1,
 		Redirect:   "",
+		Label:      "菜单管理",
 	},
 }
 
@@ -50,7 +54,7 @@ func CreateMenuTable() error {
 }
 
 // 创建一个用户
-func CreateMenuModel(name, path, meta, components, icon string, hidden bool, parentId int, redirect string) *Menu {
+func CreateMenuModel(name, path, meta, components, icon string, hidden bool, parentId int, redirect, Label string) *Menu {
 	return &Menu{
 		Name:       name,
 		Path:       path,
@@ -60,6 +64,7 @@ func CreateMenuModel(name, path, meta, components, icon string, hidden bool, par
 		Hidden:     hidden,
 		ParentId:   parentId,
 		Redirect:   redirect,
+		Label:      Label,
 	}
 }
 
@@ -68,8 +73,21 @@ func (c *Menu) CreateMenu() (menu Menu, err error) {
 	return *c, err
 }
 
-func (c *Menu) GetMenuList() (menu []Menu, err error) {
-	err = global.DBEngine.Find(&menu).Error
+type MenuRes struct {
+	ID         int    `json:"ID"`
+	Name       string `json:"name"`
+	Path       string `json:"path"`
+	Meta       string `json:"meta"`
+	Components string `json:"component"`
+	Icon       string `json:"icon"`
+	Hidden     bool   `json:"hidden"`
+	ParentId   int    `json:"parent_id"`
+	Redirect   string `json:"redirect"`
+	Label      string `json:"label"`
+}
+
+func (c *Menu) GetMenuList() (menu []MenuRes, err error) {
+	err = global.DBEngine.Model(&Menu{}).Find(&menu).Error
 	return menu, err
 }
 

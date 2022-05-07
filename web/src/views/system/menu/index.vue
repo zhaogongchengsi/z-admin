@@ -26,6 +26,9 @@
         <el-form-item label="路由路径">
           <el-input v-model="menuFrom.path" clearable />
         </el-form-item>
+        <el-form-item label="路由中文名">
+          <el-input v-model="menuFrom.label" clearable />
+        </el-form-item>
         <el-form-item label="组件路径">
           <el-input v-model="menuFrom.components" clearable />
         </el-form-item>
@@ -88,6 +91,7 @@ const menuFrom = reactive<Menu>({
   parent_id: 0,
   redirect: "",
   hidden: true,
+  label: "",
 });
 
 const menuData = ref<Menu[]>([]);

@@ -1,12 +1,12 @@
 <template>
-  <el-sub-menu :index="index">
+  <el-sub-menu :index="basePath">
     <template #title>
       <el-icon>
         <component :is="menuInfo.icon" />
       </el-icon>
       <span>{{menuInfo.label}}</span>
     </template>
-    <item-menu v-for="(item, index) in menuInfo.children" :key="index" :menuInfo="item" :index="item.path" />
+    <item-menu v-for="(item, i) in menuInfo.children" :key="i" :menuInfo="item" :index="basePath + item.path" />
   </el-sub-menu>
 </template>
 
@@ -27,6 +27,11 @@ export default defineComponent({
   },
   setup(props) {
     
+    const basePath = `/${props.index}/`;
+
+    return {
+      basePath
+    }
   },
 });
 </script>
