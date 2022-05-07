@@ -11,16 +11,42 @@ type Menu struct {
 	Name       string `json:"name"`
 	Path       string `json:"path"`
 	Meta       string `json:"meta"`
-	Components string `json:"components"`
+	Components string `json:"component"`
 	Icon       string `json:"icon"`
 	Hidden     bool   `json:"hidden"`
 	ParentId   int    `json:"parent_id"`
 	Redirect   string `json:"redirect"`
 }
 
+var initMenuList = []Menu{
+	{
+		Name:       "系统管理",
+		Path:       "/system",
+		Meta:       "",
+		Components: "views/system/index.vue",
+		Icon:       "Apple",
+		Hidden:     false,
+		ParentId:   0,
+	},
+	{
+		Name:       "menu",
+		Path:       "/menu",
+		Meta:       "",
+		Components: "views/system/menu/index",
+		Icon:       "Apple",
+		Hidden:     false,
+		ParentId:   1,
+		Redirect:   "",
+	},
+}
+
 // 创建用户表
 func CreateMenuTable() error {
-	return global.DBEngine.AutoMigrate(&Menu{})
+	if err := global.DBEngine.AutoMigrate(&Menu{}); err != nil {
+		return err
+	}
+
+	return global.DBEngine.Create(initMenuList).Error
 }
 
 // 创建一个用户

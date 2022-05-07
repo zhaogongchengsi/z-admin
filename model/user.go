@@ -19,7 +19,19 @@ type UserModel struct {
 
 // 创建用户表
 func CreateUserTable() error {
-	return global.DBEngine.AutoMigrate(&UserModel{})
+
+	if err := global.DBEngine.AutoMigrate(&UserModel{}); err != nil {
+		return err
+	}
+
+	// 初始化 用户 默认用户
+	initUser, err := NewUserModel("admin", "123456", "管理员", "https://pic.imgdb.cn/item/62761a88094754312990b498.png")
+
+	if err != nil {
+		return err
+	}
+
+	return global.DBEngine.Create(&initUser).Error
 }
 
 // 创建新用户： 账号 密码 昵称 头像 用于注册新用户

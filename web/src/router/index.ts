@@ -1,9 +1,18 @@
 import { App } from 'vue'
 import { createRouter, createWebHashHistory, RouteLocationNormalized, RouteRecordRaw } from 'vue-router'
-
+import { routerStore } from '@/pinia/index'
 
 const staticRouter = [
-    {
+    
+]
+
+
+export async function setUpRouter (app:App) {
+
+    const r = routerStore()
+    await r.getRouterInfo()
+
+    const homeRouter =  {
         path: '/',
         name: 'home',
         component: () => import('@/views/home/index.vue'),
@@ -13,23 +22,21 @@ const staticRouter = [
                 name: 'menu',
                 component: () => import('@/views/menu/index.vue'),
             }
-        ]
-    },
-    {
-        path: '/login',
-        name: 'login',
-        component: () => import("@/views/login/index.vue"),
+        ].concat(r.getRouter)
     }
-]
 
-
-export async function setUpRouter (app:App) {
-
-    const routes: ConcatArray<{ path: string; name: string; component: () => Promise<typeof import("*.vue")> }> = []
+    console.log(homeRouter)
 
     const router = createRouter({
         history: createWebHashHistory(),
-        routes: staticRouter.concat(routes),
+        routes: [
+            {
+                path: '/login',
+                name: 'login',
+                component: () => import("@/views/login/index.vue"),
+            },
+            homeRouter,
+        ],
     })
 
     router.beforeEach(beforeEach)

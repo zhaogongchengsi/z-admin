@@ -21,3 +21,15 @@ export interface AsideMenuProps {
     collapseTransition: boolean
     MenuOptions: MenuOptions[]
 }
+
+export interface RouterInfo {
+    path: string
+    name?: string
+    meta?: string
+    children?: RouterInfo[]
+    icon?: string
+    components?: any
+    [key: string] : any
+}
+
+

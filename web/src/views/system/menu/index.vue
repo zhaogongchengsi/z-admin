@@ -5,7 +5,7 @@
       <el-button type="primary" @click="openDialog">新增菜单</el-button>
     </div>
 
-    <el-table :data="menuData" style="width: 100%">
+    <el-table :data="menuData" style="width: 100%" stripe>
       <el-table-column prop="name" label="菜单名称" width="180" />
       <el-table-column prop="path" label="路由路径" width="180" />
       <el-table-column prop="icon" label="图标" />
