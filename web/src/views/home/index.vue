@@ -38,7 +38,7 @@
         </el-header>
         <el-main class="home-main" v-loading="main.loading">
           <el-scrollbar>
-            <div class="hcontainer">123213</div>
+            <router-view />
           </el-scrollbar>
         </el-main>
       </el-container>
