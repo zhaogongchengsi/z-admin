@@ -5,9 +5,9 @@ export const mainStore = defineStore("main", {
         return {
             collapse: true,
             theme: {
-                backgroundColor: '#ffffff',
-                textColor: '#333333',
-                activeTextColor: '#000000',
+                backgroundColor: '#333333',
+                textColor: '#ffffff',
+                activeTextColor: '#cccccc',
             },
             loading: false,
         }

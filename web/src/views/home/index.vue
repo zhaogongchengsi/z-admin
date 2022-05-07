@@ -24,16 +24,19 @@
             </el-icon>
           </div>
           <div class="home-head-right">
-              <el-dropdown trigger="hover">
-                <el-avatar :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>Action 1</el-dropdown-item>
-                    <el-dropdown-item>Action 2</el-dropdown-item>
-                    <el-dropdown-item>Action 3</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+            <el-dropdown trigger="hover">
+              <el-avatar
+                :size="30"
+                src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
+              />
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>Action 1</el-dropdown-item>
+                  <el-dropdown-item>Action 2</el-dropdown-item>
+                  <el-dropdown-item>Action 3</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </div>
         </el-header>
         <el-main class="home-main" v-loading="main.loading">
@@ -58,50 +61,11 @@ const main = mainStore();
 
 const menuList = [
   {
-    name: "home",
-    path: "/home",
+    name: "menu",
+    path: "/menu",
     icon: "Search",
-    label: "首页",
+    label: "菜单管理",
     hidden: true,
-    children: [
-      {
-        name: "home2",
-        path: "/home3",
-        icon: "Search",
-        label: "首页2",
-        hidden: true,
-      },
-    ],
-  },
-  {
-    name: "abc5",
-    path: "/abc546",
-    icon: "Search",
-    hidden: false,
-    label: "其他2",
-  },
-  {
-    name: "abc",
-    path: "/abc",
-    icon: "Search",
-    label: "其他",
-    hidden: true,
-    children: [
-      {
-        name: "abc2",
-        path: "/abc3",
-        hidden: true,
-        icon: "Search",
-        label: "其他2",
-      },
-      {
-        name: "abc5",
-        path: "/abc5",
-        icon: "Search",
-        hidden: false,
-        label: "其他2",
-      },
-    ],
   },
 ];
 </script>

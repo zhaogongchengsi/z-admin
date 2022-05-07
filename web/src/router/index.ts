@@ -7,6 +7,13 @@ const staticRouter = [
         path: '/',
         name: 'home',
         component: () => import('@/views/home/index.vue'),
+        children: [
+            {
+                path: '/menu',
+                name: 'menu',
+                component: () => import('@/views/menu/index.vue'),
+            }
+        ]
     },
     {
         path: '/login',

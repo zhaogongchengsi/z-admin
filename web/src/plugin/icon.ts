@@ -9,3 +9,5 @@ export default function useIcon(app: App) {
     }
     
 }
+
+export const IconNames = Object.keys(ElementPlusIconsVue)
