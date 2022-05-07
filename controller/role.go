@@ -36,3 +36,7 @@ func (a *RoleController) SetPermis() error {
 	}
 	return r.SetPermis()
 }
+
+func (a *RoleController) DeleteRole() error {
+	return model.NewRole(a.RoleName, a.RoleId, a.RolePId).DeleteRole()
+}

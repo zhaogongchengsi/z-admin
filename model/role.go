@@ -81,5 +81,22 @@ func (r *Role) SetPermis() (err error) {
 		return err
 	}
 
-	return global.DBEngine.Model(&ro).Association("MenuTree").Replace(ro.MenuTree)
+	ro.MenuTree = r.MenuTree
+
+	return global.DBEngine.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&ro).Error
+
+	// return global.DBEngine.Model(&ro).Association("MenuTree").Replace(ro.MenuTree)
+}
+
+func (r *Role) DeleteRole() (err error) {
+	var ro Role
+	err = global.DBEngine.Model(ro).Preload("MenuTree").First(&ro, "role_id = ?", r.RoleId).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return errors.New("角色不存在")
+		}
+		return err
+	}
+
+	return global.DBEngine.Model(&ro).Association("MenuTree").Clear()
 }

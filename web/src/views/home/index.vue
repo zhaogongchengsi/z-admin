@@ -15,8 +15,26 @@
       </el-aside>
       <el-container>
         <el-header class="home-header">
-          <el-button type="primary" :icon="Fold" @click="main.toggleCollapse" />
-          <div class="home-head-right">123213</div>
+          <div @click="main.toggleCollapse" class="head-btn">
+            <el-icon v-if="main.coll" :size="iconSize">
+              <expand />
+            </el-icon>
+            <el-icon v-else :size="iconSize">
+              <fold />
+            </el-icon>
+          </div>
+          <div class="home-head-right">
+              <el-dropdown trigger="hover">
+                <el-avatar :size="30" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>Action 1</el-dropdown-item>
+                    <el-dropdown-item>Action 2</el-dropdown-item>
+                    <el-dropdown-item>Action 3</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+          </div>
         </el-header>
         <el-main class="home-main" v-loading="main.loading">
           <el-scrollbar>
@@ -33,6 +51,8 @@
 import { Fold } from "@element-plus/icons-vue";
 import { mainStore } from "@/pinia/index";
 import AsideMenu from "@/components/asideMenus/index.vue";
+
+const iconSize = 30;
 
 const main = mainStore();
 
@@ -54,11 +74,11 @@ const menuList = [
     ],
   },
   {
-        name: "abc5",
-        path: "/abc546",
-        icon: "Search",
-        hidden: false,
-        label: "其他2",
+    name: "abc5",
+    path: "/abc546",
+    icon: "Search",
+    hidden: false,
+    label: "其他2",
   },
   {
     name: "abc",
@@ -84,8 +104,6 @@ const menuList = [
     ],
   },
 ];
-
-
 </script>
 
 <style scoped lang="scss">
@@ -121,5 +139,13 @@ const menuList = [
 
 .hcontainer {
   height: 100vh;
+}
+
+.head-btn {
+  cursor: pointer;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
 }
 </style>
